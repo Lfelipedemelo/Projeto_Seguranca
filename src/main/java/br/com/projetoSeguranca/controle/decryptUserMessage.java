@@ -130,11 +130,9 @@ public class decryptUserMessage extends HttpServlet {
 						originalContent = RSA.decrypt(content, privateKey);
 						response.getOutputStream().print("<br/>");
 						response.getOutputStream().print(new String(originalContent));
-						System.out.println("Passou");
 					} catch (Exception e) {
 						response.getOutputStream().print("Not possile to decript:" + new String(content));
 						e.printStackTrace();
-						System.out.println("Não Passou");
 					}
 				}
 

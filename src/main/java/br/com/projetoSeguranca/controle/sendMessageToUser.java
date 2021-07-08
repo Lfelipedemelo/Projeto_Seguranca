@@ -100,9 +100,10 @@ public class sendMessageToUser extends HttpServlet {
 					ps.setLong(2, to);
 					ps.setBytes(3, messageCyphered);// VARBINARY OR BLOB ON MySQL
 					boolean result = ps.execute();
-					if (result) {
+					if (!result) {
 						response.setStatus(200);
 						response.getOutputStream().print("Message sent");
+						response.sendRedirect("sendMessage.html");
 					} else {
 						response.setStatus(500);
 						response.getOutputStream().print("Some error happens");

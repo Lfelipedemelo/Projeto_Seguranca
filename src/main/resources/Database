@@ -1,0 +1,22 @@
+CREATE DATABASE `projeto_seguranca`;
+use projeto_seguranca;
+
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_login` varchar(85) NOT NULL,
+  `user_password` varchar(255) NOT NULL,
+  `user_public_key_path` varchar(250) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `messages` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `from` int NOT NULL,
+  `to` int NOT NULL,
+  `content` varbinary(5000) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `to_idx` (`to`),
+  KEY `from_idx` (`from`),
+  CONSTRAINT `from` FOREIGN KEY (`from`) REFERENCES `users` (`id`),
+  CONSTRAINT `to` FOREIGN KEY (`to`) REFERENCES `users` (`id`)
+);
