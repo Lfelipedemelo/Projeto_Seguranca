@@ -1,9 +1,6 @@
 package br.com.projetoSeguranca.controle;
 
-import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
@@ -63,12 +60,12 @@ public class sendMessageToUser extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-//		if (request.getSession().getAttribute("user_id") == null) {
-//			response.setStatus(500);
-//			response.getOutputStream().print("This funciton requires authentication...");
-//			return;
-//		}
+
+		if (request.getSession().getAttribute("user_id") == null) {
+			response.setStatus(500);
+			response.getOutputStream().print("This funciton requires authentication...");
+			return;
+		}
 
 		try {
 			String userId = request.getParameter("userId");
@@ -90,35 +87,26 @@ public class sendMessageToUser extends HttpServlet {
 					final PublicKey publicKey = (PublicKey) inputStream.readObject();
 					byte[] messageCyphered = RSA.encrypt(message.getBytes(), publicKey);
 
-					File f = new File("message_cyphered");
-					FileOutputStream fos = new FileOutputStream(f);
-					DataOutputStream dos = new DataOutputStream(fos);
-					dos.write(messageCyphered);
-					dos.close();
-					fos.close();
-					response.getOutputStream().print(f.getAbsolutePath());
+					// store in database
+					long from = (Long) request.getSession().getAttribute("user_id");
+					long to = Integer.valueOf(userId);
+					String content = new String(messageCyphered);
 
-//					// store in database
-//					long from = (long) request.getSession().getAttribute("user_id");
-//					long to = Integer.valueOf(userId);
-//					String content = new String(messageCyphered);
-//
-//					ds = new DataSourceMySQL();
-//					sql = "insert into messages (`from`,`to`,content) values(?,?,?)";
-//					con = ds.getCon();
-//					ps = con.prepareStatement(sql);
-//					ps.setLong(1, from);
-//					ps.setLong(2, to);
-//					// ps.setString(3, content);
-//					ps.setBytes(3, messageCyphered);// VARBINARY OR BLOB ON MySQL
-//					boolean result = ps.execute();
-//					if (result) {
-//						response.setStatus(200);
-//						response.getOutputStream().print("Message sent");
-//					} else {
-//						// response.setStatus(500);
-//						// response.getOutputStream().print("Some error happens");
-//					}
+					ds = new DataSourceMySQL();
+					sql = "insert into messages (`from`,`to`,content) values(?,?,?)";
+					con = ds.getCon();
+					ps = con.prepareStatement(sql);
+					ps.setLong(1, from);
+					ps.setLong(2, to);
+					ps.setBytes(3, messageCyphered);// VARBINARY OR BLOB ON MySQL
+					boolean result = ps.execute();
+					if (result) {
+						response.setStatus(200);
+						response.getOutputStream().print("Message sent");
+					} else {
+						response.setStatus(500);
+						response.getOutputStream().print("Some error happens");
+					}
 
 				} catch (ClassNotFoundException ex) {
 					Logger.getLogger(sendMessageToUser.class.getName()).log(Level.SEVERE, null, ex);

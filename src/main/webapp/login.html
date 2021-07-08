@@ -66,22 +66,22 @@
     </header>
   </div>
 	
-  <div class="b-example-divider"></div>
+  <div class="b-example-divider my-1"></div>
   <div class="px-4 py-5 my-5 text-center">
     <h1 class="display-5 fw-bold">Login</h1>
     <hr class="my-4">
     <p/>
 	   <div class="col-md-10 mx-auto col-lg-5">
-        <form id="cadastro" class="p-4 p-md-5 border rounded-3 bg-light">
+        <form action="LoginControle" method="post" id="formLogin" class="p-4 p-md-5 border rounded-3 bg-light">
           <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="email" placeholder="Login">
-            <label for="floatingInput">Login</label>
+            <input name="login" type="text" class="form-control" id="login" placeholder="Login">
+            <label for="login">Login</label>
           </div>
           <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="senha" placeholder="Senha">
-            <label for="floatingPassword">Senha</label>
+            <input name="senha" type="password" class="form-control" id="senha" placeholder="Senha">
+            <label for="senha">Senha</label>
           </div>
-          <a href="sendMessage.html" class="w-100 btn btn-lg btn-primary" type="submit">Entrar</a>
+          <button class="w-100 btn btn-lg btn-primary" type="submit">Entrar</button>
           <hr class="my-4">
           <small class="text-muted">Ainda não é um usuário? <a href="register.html">Registrar</a></small>
         </form>

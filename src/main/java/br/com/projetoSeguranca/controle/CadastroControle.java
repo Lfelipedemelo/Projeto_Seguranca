@@ -29,7 +29,7 @@ public class CadastroControle extends HttpServlet {
 		
 		DataSourceMySQL ds = new DataSourceMySQL();
 		String sql = "INSERT INTO USERS(user_login, user_password, user_public_key_path)"
-				+ " values (?,?,?)";
+				+ " values (?,sha2(?,512),?)";
 		Connection con = ds.getCon();
 		PreparedStatement ps;
 		try {
@@ -39,7 +39,7 @@ public class CadastroControle extends HttpServlet {
 			ps.setString(3, RSA.generateKey(userLogin));
 			int result = ps.executeUpdate();
 			if (result > 0) {
-				// TERMINAR ESTA PARTE
+				response.sendRedirect("login.html");
 			} else {
 				 response.setStatus(500);
 				 response.getOutputStream().print("Some error happens");

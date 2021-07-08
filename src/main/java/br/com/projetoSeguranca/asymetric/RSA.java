@@ -85,7 +85,7 @@ public class RSA {
       cipher.init(Cipher.ENCRYPT_MODE, key);
       cipherText = cipher.doFinal(content);
     } catch (Exception e) {
-      e.printStackTrace();
+      System.out.println("Erro ao encryptar: " + e.getMessage());
     }
      
     return cipherText;

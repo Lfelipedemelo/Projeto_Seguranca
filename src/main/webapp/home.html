@@ -100,7 +100,7 @@
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <a href="home.html" class="nav-link link-dark" aria-current="page">
+        <a href="home.html" class="nav-link active" aria-current="page">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
           Home
         </a>
@@ -112,13 +112,13 @@
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link link-dark">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
-          Products
+        <a href="receiveMessage.html" class="nav-link link-dark">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#verMensagem"/></svg>
+          Ler Mensagem
         </a>
       </li>
       <li>
-        <a href="login.html" class="nav-link link-dark">
+        <a href="login.html" class="nav-link link-dark" method="logOut" action="LoginControle">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#sair"/></svg>
           Sair
         </a>
@@ -128,22 +128,11 @@
 
   <div class="b-side-divider"></div>
   <div class="container">
-    <div class="px-4  my-3 text-center">
+    <div class="px-4 text-center">
     <hr class="my-3 mt-5">
-    <h1 class="display-5 fw-bold">Ler Mensagem</h1>
-    <hr class="my-4 mb-5"></div>
-  <div class="p-3 border bg-light">
-	<form method="post" enctype="multipart/form-data" action="decryptUserMessage">
-		<div class="input-group">
-		  <input name="private_key" class="form-control" type="file" id="formFile">
-		<span class="input-group-text">Chave privada</span>
-		</div>
-		<hr>
-		<div class="d-grid gap-2 d-md-block">
-		  <button class="btn btn-primary" type="submit">Enviar</button>
-		</div>
-	</form>
-  </div>
+    <h1 class="display-5 fw-bold">Bem Vindo</h1>
+    <hr class="my-4 mb-5">
+    </div>
   </div>
   
 <div class="b-side-divider"></div>

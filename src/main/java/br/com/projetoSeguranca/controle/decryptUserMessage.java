@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,10 +36,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import br.com.projetoSeguranca.asymetric.RSA;
 import br.com.projetoSeguranca.utils.DataSourceMySQL;
 
-/**
- *
- * @author rafae
- */
+@WebServlet("/decryptUserMessage")
 public class decryptUserMessage extends HttpServlet {
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -92,34 +90,34 @@ public class decryptUserMessage extends HttpServlet {
 					FileItem fitem = (FileItem) it.next();
 
 					String fileName = fitem.getName();
-					if (!fitem.isFormField()) {
-						File f = new File(fileName);
-						FileOutputStream fo = new FileOutputStream(f);
-						DataOutputStream dados = new DataOutputStream(fo);
-						byte[] b = fitem.get();
-						dados.write(b, 0, (int) fitem.getSize());
-						dados.close();
-						fo.close();
-						// response.getOutputStream().print("Uploaded file: "+f.getAbsolutePath());
-						// System.out.println("Uploaded file: "+f.getAbsolutePath());
-
-						if (fitem.getFieldName().equals("message")) {
-							message = b;
-						} else if (fitem.getFieldName().equals("private_key")) {
-							ObjectInputStream inputStream = new ObjectInputStream(
-									new FileInputStream(f.getAbsolutePath()));
-							privateKey = (PrivateKey) inputStream.readObject();
-
-						}
-
-						// response.getOutputStream().write(originalContent);
-					}
+//					if (!fitem.isFormField()) {
+//						File f = new File(fileName);
+//						FileOutputStream fo = new FileOutputStream(f);
+//						DataOutputStream dados = new DataOutputStream(fo);
+//						byte[] b = fitem.get();
+//						dados.write(b, 0, (int) fitem.getSize());
+//						dados.close();
+//						fo.close();
+//						// response.getOutputStream().print("Uploaded file: "+f.getAbsolutePath());
+//						// System.out.println("Uploaded file: "+f.getAbsolutePath());
+//
+//						if (fitem.getFieldName().equals("message")) {
+//							message = b;
+//						} else if (fitem.getFieldName().equals("private_key")) {
+//							ObjectInputStream inputStream = new ObjectInputStream(
+//									new FileInputStream(f.getAbsolutePath()));
+//							privateKey = (PrivateKey) inputStream.readObject();
+//
+//						}
+//
+//						// response.getOutputStream().write(originalContent);
+//					}
 				}
 
 				byte[] originalContent = null;
 
 				DataSourceMySQL ds = new DataSourceMySQL();
-				String sql = "SELECT content FROM secret_messages.messages where `to`=?";
+				String sql = "SELECT content FROM messages where `to`=?";
 				Connection con = ds.getCon();
 				PreparedStatement ps = con.prepareStatement(sql);
 				ps.setLong(1, userId);
@@ -132,17 +130,20 @@ public class decryptUserMessage extends HttpServlet {
 						originalContent = RSA.decrypt(content, privateKey);
 						response.getOutputStream().print("<br/>");
 						response.getOutputStream().print(new String(originalContent));
+						System.out.println("Passou");
 					} catch (Exception e) {
 						response.getOutputStream().print("Not possile to decript:" + new String(content));
 						e.printStackTrace();
+						System.out.println("Não Passou");
 					}
 				}
 
 			} catch (FileUploadException e) {
 				e.printStackTrace();
-			} catch (ClassNotFoundException ex) {
+				System.out.println("Erro: " + e.getMessage());
+			} /*catch (ClassNotFoundException ex) {
 				Logger.getLogger(decryptUserMessage.class.getName()).log(Level.SEVERE, null, ex);
-			} catch (SQLException ex) {
+			}*/ catch (SQLException ex) {
 				Logger.getLogger(decryptUserMessage.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
