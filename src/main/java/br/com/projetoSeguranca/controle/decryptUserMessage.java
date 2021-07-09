@@ -90,28 +90,29 @@ public class decryptUserMessage extends HttpServlet {
 					FileItem fitem = (FileItem) it.next();
 
 					String fileName = fitem.getName();
-//					if (!fitem.isFormField()) {
-//						File f = new File(fileName);
-//						FileOutputStream fo = new FileOutputStream(f);
-//						DataOutputStream dados = new DataOutputStream(fo);
-//						byte[] b = fitem.get();
-//						dados.write(b, 0, (int) fitem.getSize());
-//						dados.close();
-//						fo.close();
-//						// response.getOutputStream().print("Uploaded file: "+f.getAbsolutePath());
-//						// System.out.println("Uploaded file: "+f.getAbsolutePath());
-//
-//						if (fitem.getFieldName().equals("message")) {
-//							message = b;
-//						} else if (fitem.getFieldName().equals("private_key")) {
-//							ObjectInputStream inputStream = new ObjectInputStream(
-//									new FileInputStream(f.getAbsolutePath()));
-//							privateKey = (PrivateKey) inputStream.readObject();
-//
-//						}
-//
-//						// response.getOutputStream().write(originalContent);
-//					}
+					if (!fitem.isFormField()) {
+						File f = new File(fileName);
+						FileOutputStream fo = new FileOutputStream(f);
+						DataOutputStream dados = new DataOutputStream(fo);
+						byte[] b = fitem.get();
+						dados.write(b, 0, (int) fitem.getSize());
+						dados.close();
+						fo.close();
+						// response.getOutputStream().print("Uploaded file: "+f.getAbsolutePath());
+						 System.out.println("Uploaded file: "+f.getAbsolutePath());
+
+						if (fitem.getFieldName().equals("message")) {
+							message = b;
+							System.out.println("deu ruim");
+						} else if (fitem.getFieldName().equals("private_key")) {
+							ObjectInputStream inputStream = new ObjectInputStream(
+									new FileInputStream(f.getAbsolutePath()));
+							privateKey = (PrivateKey) inputStream.readObject();
+
+						}
+
+						// response.getOutputStream().write(originalContent);
+					}
 				}
 
 				byte[] originalContent = null;
@@ -120,7 +121,7 @@ public class decryptUserMessage extends HttpServlet {
 				String sql = "SELECT content FROM messages where `to`=?";
 				Connection con = ds.getCon();
 				PreparedStatement ps = con.prepareStatement(sql);
-				ps.setLong(1, userId);
+				ps.setLong(1, 1);
 				ResultSet rs = ps.executeQuery();
 
 				while (rs.next()) {
@@ -143,6 +144,9 @@ public class decryptUserMessage extends HttpServlet {
 				Logger.getLogger(decryptUserMessage.class.getName()).log(Level.SEVERE, null, ex);
 			}*/ catch (SQLException ex) {
 				Logger.getLogger(decryptUserMessage.class.getName()).log(Level.SEVERE, null, ex);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}

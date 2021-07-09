@@ -17,9 +17,9 @@ public class RSA {
   
   public static final String ALGORITHM = "RSA"; 
 
-  public static final String PATH_PRIVATE_KEY = "C:/keys/private_";
+  public static final String PATH_PRIVATE_KEY = "C:\\keys\\private_";
 
-  public static final String PATH_PUBLIC_KEY = "C:/keys/public_";
+  public static final String PATH_PUBLIC_KEY = "C:\\keys\\public_";
 
   public static String generateKey(String login) {
     try {
